@@ -1,0 +1,59 @@
+version: '3'
+services:
+  rabbitmq-node1:
+    container_name: rabbitmq-node1
+    image: rabbitmq:3.7.4-management
+    hostname: rabbitmq-node1
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15672:15672"
+    networks:
+      - cluster-network
+    volumes:
+      - $PWD/rabbitmq/storage/rabbitmq-node1:/var/lib/rabbitmq
+  rabbitmq-node2:
+    container_name: rabbitmq-node2
+    image: rabbitmq:3.7.4-management
+    hostname: rabbitmq-node2
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15673:15672"
+    networks:
+      - cluster-network
+    volumes:
+      - $PWD/rabbitmq/storage/rabbitmq-node2:/var/lib/rabbitmq
+  rabbitmq-node3:
+    container_name: rabbitmq-node3
+    image: rabbitmq:3.7.4-management
+    hostname: rabbitmq-node3
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15674:15672"
+    networks:
+      - cluster-network
+    volumes:
+      - $PWD/rabbitmq/storage/rabbitmq-node3:/var/lib/rabbitmq
+  haproxy:
+    image: shinyay/haproxy-rabbitmq-cluster:2.0.1
+    container_name: haproxy
+    hostname: haproxy
+    ports:
+      - "5672:5672"
+      - "1936:1936"
+    networks:
+   - cluster-network
+networks:
+  cluster-network:
+    driver: bridge
