@@ -1,4 +1,5 @@
 version: '3'
+
 services:
   rabbitmq-node1:
     container_name: rabbitmq-node1
@@ -50,10 +51,10 @@ services:
     container_name: haproxy
     hostname: haproxy
     ports:
-      - "5672:5672"
-      - "1936:1936"
+      - 5672:5672
+      - 1936:1936
     networks:
-   - cluster-network
+      - cluster-network
 networks:
   cluster-network:
     driver: bridge
